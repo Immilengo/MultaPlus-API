@@ -2,7 +2,7 @@ package ao.multaplus.auth.entity;
 
 import ao.multaplus.model.AbstractModel;
 import ao.multaplus.role.entity.Roles;
-import ao.multaplus.status.entity.Status;
+import ao.multaplus.state.entity.Status;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,8 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +21,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Auth extends AbstractModel implements UserDetails {
 
     @Column(nullable = false, unique = true)
@@ -32,6 +34,8 @@ public class Auth extends AbstractModel implements UserDetails {
     @Column(nullable = false)
     @NotBlank(message = "Enter a password")
     private String password;
+    @Column(unique = true)
+    private String telephone;
 
     @ManyToOne
     @JoinColumn(name = "state_id")

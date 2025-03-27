@@ -2,7 +2,7 @@ package ao.multaplus.payment.entity;
 
 import ao.multaplus.fine.entity.Fines;
 import ao.multaplus.model.AbstractModel;
-import ao.multaplus.statusPayment.entity.StatusPayment;
+import ao.multaplus.statePayment.entity.StatusPayment;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

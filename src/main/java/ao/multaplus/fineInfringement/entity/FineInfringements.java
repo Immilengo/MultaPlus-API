@@ -3,7 +3,7 @@ package ao.multaplus.fineInfringement.entity;
 import ao.multaplus.fine.entity.Fines;
 import ao.multaplus.infringement.entity.Infringements;
 import ao.multaplus.model.AbstractModel;
-import ao.multaplus.status.entity.Status;
+import ao.multaplus.state.entity.Status;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

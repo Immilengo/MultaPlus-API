@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+    </div>
+    <div class="content">
+        <p>Olá!</p>
+        <p>Para continuar com sua solicitação, insira o código de verificação abaixo:</p>
+        <p>Código: <strong th:text="${code}"></strong></p>
+        <p>Este código é válido por <strong th:text="${expirationTime}"></strong> minutos e não deve ser compartilhado com ninguém.</p>
+        <p>Se você não solicitou este código, por favor, ignore esta mensagem.</p>
+        <p>Obrigado!</p>
+    </div>
+</div>
+</body>
+
+</html>

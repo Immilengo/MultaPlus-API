@@ -1,7 +1,7 @@
 package ao.multaplus.typeUser.entity;
 
 import ao.multaplus.model.AbstractModel;
-import ao.multaplus.status.entity.Status;
+import ao.multaplus.state.entity.Status;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +17,7 @@ import lombok.Setter;
 public class TypeUsers extends AbstractModel {
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Enter a Type Genders")
+    @NotBlank(message = "Enter a Type user")
     private String type;
 
     private String description;

@@ -1,7 +1,7 @@
 package ao.multaplus.infringement.entity;
 
 import ao.multaplus.model.AbstractModel;
-import ao.multaplus.status.entity.Status;
+import ao.multaplus.state.entity.Status;
 import ao.multaplus.typeInfringement.entity.TypeInfringements;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;

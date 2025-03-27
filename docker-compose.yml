@@ -1,0 +1,14 @@
+services:
+  cache:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    command: [redis-server]
+    environment:
+      - REDIS_MAXMEMORY_POLICY=allkeys-lru
+      - overcommit_memory=1
+      - maxmemory=1gb
+    volumes:
+      - ./cache:/var/lib/redis/data

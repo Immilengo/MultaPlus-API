@@ -2,7 +2,7 @@ package ao.multaplus.fine.entity;
 
 import ao.multaplus.model.AbstractModel;
 import ao.multaplus.motorist.entity.Motorists;
-import ao.multaplus.status.entity.Status;
+import ao.multaplus.state.entity.Status;
 import ao.multaplus.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;

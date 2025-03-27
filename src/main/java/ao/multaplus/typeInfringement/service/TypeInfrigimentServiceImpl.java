@@ -1,72 +1,76 @@
 package ao.multaplus.typeInfringement.service;
 
-import ao.multaplus.status.entity.Status;
-import ao.multaplus.status.repository.StatusRepository;
-import ao.multaplus.typeInfringement.DTO.TypeInfringementsDTO;
+import ao.multaplus.state.entity.Status;
+import ao.multaplus.state.repository.StatusRepository;
+import ao.multaplus.typeInfringement.dtos.TypeInfringementsRequestdtos;
+import ao.multaplus.typeInfringement.dtos.TypeInfringementsResponsedtos;
 import ao.multaplus.typeInfringement.entity.TypeInfringements;
 import ao.multaplus.typeInfringement.repository.TypeInfrigimentsRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TypeInfrigimentServiceImpl implements TypeInfrigimentService {
+    @Autowired
    private final TypeInfrigimentsRepository repository;
+    @Autowired
     private final StatusRepository statusRepository;
 
-    public TypeInfrigimentServiceImpl(TypeInfrigimentsRepository repository, StatusRepository statusRepository) {
-        this.repository = repository;
-        this.statusRepository = statusRepository;
-    }
-
     @Override
-    public TypeInfringementsDTO create(TypeInfringementsDTO dto) {
-        Status status = statusRepository.findById(dto.stateId())
+    public TypeInfringementsResponsedtos create(TypeInfringementsRequestdtos requestdtos) {
+        Status status = statusRepository.findById(requestdtos.statusId().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Status not found"));
 
         TypeInfringements infringement = new TypeInfringements();
-        infringement.setType(dto.type());
-        infringement.setDescription(dto.description());
-        infringement.setPrice(dto.price());
-        infringement.setState(status);
+        infringement.setType(requestdtos.type()); // Define o tipo a partir do DTO
+        infringement.setDescription(requestdtos.description()); // Define a descrição a partir do DTO
+        infringement.setPrice(Float.valueOf(requestdtos.price())); // Define o preço a partir do DTO
+        infringement.setState(status); // Define o estado encontrado
 
         return toDto(repository.save(infringement));
     }
 
     @Override
-    public TypeInfringementsDTO findById(Long id) {
+    public TypeInfringementsResponsedtos findById(Long id) {
         TypeInfringements infringement = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("TypeInfringement not found"));
         return toDto(infringement);
     }
 
     @Override
-    public List<TypeInfringementsDTO> findAll() {
+    public List<TypeInfringementsResponsedtos> findAll() {
         return repository.findAll().stream().map(this::toDto).toList();
     }
 
     @Override
-    public TypeInfringementsDTO update(Long id, TypeInfringementsDTO dto) {
+    public TypeInfringementsResponsedtos update(Long id, TypeInfringementsRequestdtos requestdtos) {
         TypeInfringements infringement = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("TypeInfringement not found"));
-        Status status = statusRepository.findById(dto.stateId())
+        Status status = statusRepository.findById(requestdtos.statusId().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Status not found"));
 
-        infringement.setType(dto.type());
-        infringement.setDescription(dto.description());
-        infringement.setPrice(dto.price());
+        infringement.setType(infringement.getType());
+        infringement.setDescription(infringement.getDescription());
+        infringement.setPrice(infringement.getPrice());
         infringement.setState(status);
 
         return toDto(repository.save(infringement));
     }
+
+
     @Override
     public void delete(Long id) {
         TypeInfringements infringement = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("TypeInfringement not found"));
 
         // Alterar o estado para "eliminado"
-        Status eliminatedStatus = (Status) statusRepository.findByState("eliminated")
+        Status eliminatedStatus = (Status) statusRepository.findById(3L)
                 .orElseThrow(() -> new EntityNotFoundException("Status 'eliminated' not found"));
 
         infringement.setState(eliminatedStatus);
@@ -74,24 +78,64 @@ public class TypeInfrigimentServiceImpl implements TypeInfrigimentService {
     }
 
     @Override
+    @PostConstruct
     public void migration() {
-        if (statusRepository.count() == 0) {
-            String[] statuses = {"active", "inactive", "eliminated"};
-            for (String state : statuses) {
-                Status status = new Status();
-                status.setState(state);
-                statusRepository.save(status);
+        if (repository.count() == 0) {
+            String[] types = {
+                    "Speeding",
+                    "Parking in prohibited areas",
+                    "Driving without a license",
+                    "Running a red light",
+                    "Failure to comply with internal regulations",
+                    "Misuse of company resources",
+                    "Non-compliance with deadlines",
+                    "Improper waste disposal",
+                    "Pollution of water bodies",
+                    "Illegal deforestation",
+                    "Tax evasion",
+                    "Failure to issue invoices",
+                    "False or incomplete declarations",
+                    "Public disorder",
+                    "Minor theft",
+                    "Light assaults"
+            };
+            String[] description = {
+                    "Exceeding the speed limit",
+                    " Parking vehicles in prohibited areas",
+                    " Driving a vehicle without a valid license",
+                    "Failing to stop at a red traffic light",
+                    " Violating internal organizational rules",
+                    " Misusing resources for personal purposes",
+                    " Missing established deadlines",
+                    " Disposing of waste improperly",
+                    " Contaminating rivers",
+                    " lakes, or other water bodies",
+                    " Clearing forests without authorization",
+                    " Avoiding taxes by falsifying or omitting financial information",
+                    " Not issuing required invoices in commercial transactions",
+                    " Providing false or incomplete information in legal documents",
+                    " Causing public disturbances or disorder",
+                    " Committing minor thefts of property",
+                    " Engaging in light physical assaults without serious injury"
+            };
+
+
+            for (String infringementType : types) {
+                TypeInfringements infringement = new TypeInfringements();
+                infringement.setType(infringementType);
+                infringement.setDescription(infringementType);
+                repository.save(infringement);
             }
         }
     }
 
-    private TypeInfringementsDTO toDto(TypeInfringements infringement) {
-        return new TypeInfringementsDTO(
+    private TypeInfringementsResponsedtos toDto(TypeInfringements infringement) {
+        return new TypeInfringementsResponsedtos(
                 infringement.getId(),
                 infringement.getType(),
                 infringement.getDescription(),
                 infringement.getPrice(),
-                infringement.getState() != null ? infringement.getState().getId() : null
+                infringement.getState()
         );
     }
 }

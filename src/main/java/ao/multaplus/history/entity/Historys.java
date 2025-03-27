@@ -2,15 +2,13 @@ package ao.multaplus.history.entity;
 
 import ao.multaplus.action.entity.Actions;
 import ao.multaplus.model.AbstractModel;
-import ao.multaplus.status.entity.Status;
+import ao.multaplus.state.entity.Status;
 import ao.multaplus.typeIdentifier.entity.TypeIdentifiers;
 import ao.multaplus.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 

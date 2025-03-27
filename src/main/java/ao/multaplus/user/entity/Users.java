@@ -2,18 +2,16 @@ package ao.multaplus.user.entity;
 
 import ao.multaplus.auth.entity.Auth;
 import ao.multaplus.gender.entity.Genders;
-import ao.multaplus.province.entity.Provinces;
-import ao.multaplus.status.entity.Status;
 import ao.multaplus.model.AbstractModel;
+import ao.multaplus.province.entity.Provinces;
+import ao.multaplus.state.entity.Status;
 import ao.multaplus.typeUser.entity.TypeUsers;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.LocalDate;
 
 @Entity
@@ -28,8 +26,7 @@ public class Users extends AbstractModel {
     @Column(columnDefinition = "timestamp")
     private LocalDate dateBirth;
 
-    @Column(unique = true)
-    private String telephone;
+
 
     @Column(unique = true)
     private String bi;
@@ -59,7 +56,7 @@ public class Users extends AbstractModel {
     @JsonIgnoreProperties("users")
     private TypeUsers typeUsers;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "login_id")
     @JsonIgnoreProperties("users")
     private Auth login;
